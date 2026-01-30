@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Zufallsbuchstabe</title>
+  <style>
+    body {
+      background: #000;
+      color: white;
+      font-family: sans-serif;
+      margin: 0;
+    }
+    .hitbox {
+      position: fixed;
+      inset: 0;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .symbol {
+      font-size: 100px;
+      transition: transform 0.2s ease;
+      pointer-events: none;
+    }
+    .hitbox:hover .symbol {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hitbox" id="hitbox">
+    <div class="symbol" id="symbol">?</div>
+  </div>
+
+  <script>
+    const letters = "ABCDEFGHIJKLMNOPRSTUVWZ";
+    const hitbox = document.getElementById("hitbox");
+    const symbol = document.getElementById("symbol");
+
+    function randomLetter() {
+      return letters[Math.floor(Math.random() * letters.length)];
+    }
+
+    let animating = false;
+    let started = false;
+
+    function flicker() {
+      if (animating) return;
+      animating = true;
+      started = true;
+
+      const times = 3 + Math.floor(Math.random() * 8);
+      let i = 0;
+
+      const tick = () => {
+        symbol.textContent = randomLetter();
+        i++;
+        if (i < times) {
+          setTimeout(tick, 40 + Math.floor(Math.random() * 80));
+        } else {
+          animating = false;
+        }
+      };
+
+      tick();
+    }
+
+    hitbox.addEventListener("click", flicker);
+  </script>
+
+</body>
+</html>
